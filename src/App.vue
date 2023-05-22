@@ -25,9 +25,14 @@ main {
   display: flex;
   flex: 1 1 auto;
   width: 65%;
+  font-size: 1.3rem;
 }
 
 .content-column {
   width: 50%;
+}
+
+.content-column:first-child {
+  padding-right: 2rem;
 }
 </style>

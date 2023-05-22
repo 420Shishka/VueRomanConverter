@@ -1,15 +1,6 @@
 <script setup lang="ts">
-type RomanNumber = "I" | "V" | "X" | "L" | "C" | "D" | "M";
+import { manifest } from '../declarations';
 
-const manifest = new Map<RomanNumber, number>([
-  ['I', 1],
-  ['V', 5],
-  ['X', 10],
-  ['L', 50],
-  ['C', 100],
-  ['D', 500],
-  ['M', 1000],
-]);
 </script>
 
 <template>
@@ -22,4 +13,14 @@ const manifest = new Map<RomanNumber, number>([
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#manifest-container {
+  border-radius: 25px;
+  background-color: #2f2f2f;
+}
+
+#manifest {
+  padding: 1.5rem;
+  list-style: none;
+}
+</style>
