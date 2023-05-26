@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue';
 import { RomanNumber, manifest } from '../declarations';
+import Error from './Error.vue';
 
 const inputValue = ref('');
-const validator = /^(?=[MDCLXVI])M*(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$/;
+const romanValidator = /^(?=[MDCLXVI])*(M{0,3})(C[MD]|D?C{0,3})(X[CL]|L?X{0,3})(I[XV]|V?I{0,3})$/;
 
 let result: null | number = null;
+let isValid: boolean = true;
 
 const convert = (input: any) => {
   const data: RomanNumber[] = [...input];
@@ -14,19 +16,23 @@ const convert = (input: any) => {
     (result: number, currentValue: RomanNumber, currentIndex: number) => {
       return manifest.get(data[currentIndex + 1])! > manifest.get(currentValue)!
         ? result - manifest.get(currentValue)!
-        : result + manifest.get(currentValue)!
+        : result + manifest.get(currentValue)!;
     }, 0
   );
 }
 
-const validate = (newVal: string) => {
-  return validator.test(newVal);
+const validateRomanNumber = (newVal: string) => {
+  return romanValidator.test(newVal);
 }
 
 const handleInput = (newVal: string) => {
-  if (!newVal) return result = null;
-  const isValid = validate(newVal);
-  console.log(isValid);
+  if (!newVal) {
+    result = null;
+    isValid = true;
+    return;
+  }
+
+  isValid = validateRomanNumber(newVal);
 
   if (!isValid) return;
 
@@ -42,7 +48,15 @@ watch(inputValue, handleInput);
       <input type="text" placeholder="Roman number" v-model="inputValue" />
     </div>
 
-    <div id="converter__result">{{ result }}</div>
+    <div id="converter__result-container">
+      <div id="converter__error" v-if="!isValid">
+        <Error message="Invalid input" />
+      </div>
+
+      <div id="converter__result" v-else>
+        Result: {{ result }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,12 +70,12 @@ input {
   padding: .5rem .8rem;
   width: 100%;
   border: none;
-  border-radius: 15px;
+  border-radius: .7rem;
   outline: none;
   font-size: 1.3rem;
 }
 
-#converter__result {
+#converter__result-container {
   padding-top: 1rem;
 }
 </style>

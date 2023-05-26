@@ -15,7 +15,7 @@ import { manifest } from '../declarations';
 
 <style scoped>
 #manifest-container {
-  border-radius: 25px;
+  border-radius: .7rem;
   background-color: #2f2f2f;
 }
 
